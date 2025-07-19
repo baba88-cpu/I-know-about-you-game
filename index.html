@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>双人联机·石头剪刀布</title>
+    <title>我知道你 - 双人联机石头剪刀布</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
@@ -26,7 +26,7 @@
             --card-bg: rgba(255, 255, 255, 0.12);
             --text-light: #ffffff;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            --transition: all 0.3 cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         body {
@@ -54,13 +54,36 @@
             position: relative;
         }
         
+        .game-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+        
         h1 {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             margin-bottom: 20px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             color: #FFEB3B;
             position: relative;
             padding-bottom: 15px;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #FF9800, #FF5722);
+            border-radius: 2px;
         }
         
         h2 {
@@ -288,11 +311,181 @@
         .hidden {
             display: none;
         }
+        
+        .server-select {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        .music-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .music-control:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .music-control i {
+            font-size: 1.5rem;
+            color: #FFEB3B;
+        }
+        
+        .music-info {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+        }
+        
+        .music-info.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .music-info h4 {
+            color: #FFEB3B;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .music-info p {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .volume-control {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin-top: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .volume-level {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 70%;
+            background: linear-gradient(to right, #FF9800, #FF5722);
+            border-radius: 4px;
+        }
+        
+        .volume-knob {
+            position: absolute;
+            top: -4px;
+            left: 70%;
+            width: 16px;
+            height: 16px;
+            background: #FFEB3B;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            cursor: grab;
+        }
+        
+        .wechat-share {
+            background: rgba(7, 193, 96, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .wechat-share h3 {
+            color: #07C160;
+            margin-bottom: 10px;
+        }
+        
+        .wechat-share p {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .wechat-share .qr-code {
+            width: 150px;
+            height: 150px;
+            margin: 10px auto;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: #07C160;
+        }
+        
+        .game-result-animation {
+            animation: resultPulse 1s infinite alternate;
+        }
+        
+        @keyframes resultPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="game-title">我知道你</div>
         <h1><i class="fas fa-gamepad"></i> 双人联机·石头剪刀布</h1>
+        
+        <!-- 音乐控制 -->
+        <div class="music-control" id="music-control">
+            <i class="fas fa-music"></i>
+        </div>
+        
+        <div class="music-info" id="music-info">
+            <h4>背景音乐</h4>
+            <p>ninelie - 钢琴版</p>
+            <div class="volume-control" id="volume-control">
+                <div class="volume-level" id="volume-level"></div>
+                <div class="volume-knob" id="volume-knob"></div>
+            </div>
+        </div>
         
         <!-- 连接区域 -->
         <div id="connection-section">
@@ -300,8 +493,8 @@
             
             <div class="form-group">
                 <label>你的玩家 ID (其他人可用此 ID 连接你):</label>
-                <div class="peer-id" id="my-peer-id">正在生成 ID...</div>
-                <button class="copy-btn" id="copy-id-btn"><i class="fas fa-copy"></i> 复制 ID</button>
+                <div class="peer-id" id="my-peer-id">正在连接服务器...</div>
+                <button class="copy-btn" id="copy-id-btn" disabled><i class="fas fa-copy"></i> 复制 ID</button>
             </div>
             
             <div class="form-group">
@@ -310,11 +503,31 @@
                 <button id="connect-btn" class="mt-15"><i class="fas fa-link"></i> 连接到对方</button>
             </div>
             
+            <div class="form-group">
+                <label>选择服务器:</label>
+                <select id="server-select" class="server-select">
+                    <option value="server1">服务器1 (推荐)</option>
+                    <option value="server2">服务器2</option>
+                    <option value="server3">服务器3</option>
+                </select>
+            </div>
+            
             <div class="result" id="connection-status">
-                <i class="fas fa-info-circle"></i> 正在等待连接...
+                <i class="fas fa-info-circle"></i> 正在初始化连接...
             </div>
             
             <button id="host-btn"><i class="fas fa-user-plus"></i> 创建新房间</button>
+            <button id="refresh-btn"><i class="fas fa-sync-alt"></i> 刷新连接</button>
+            
+            <div class="wechat-share">
+                <h3><i class="fab fa-weixin"></i> 微信分享指南</h3>
+                <p>1. 复制游戏链接发送给朋友</p>
+                <p>2. 朋友打开链接后，将你的ID发给他</p>
+                <p>3. 朋友在输入框中粘贴你的ID并连接</p>
+                <div class="qr-code">
+                    <i class="fab fa-weixin"></i>
+                </div>
+            </div>
         </div>
 
         <!-- 游戏区域 -->
@@ -380,6 +593,11 @@
             </div>
         </div>
     </div>
+    
+    <!-- 背景音乐 -->
+    <audio id="background-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/19/audio_6d1a1f4e95.mp3?filename=relaxing-piano-music-zen-11148.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -391,6 +609,8 @@
             const remotePeerIdEl = document.getElementById('remote-peer-id');
             const connectBtn = document.getElementById('connect-btn');
             const hostBtn = document.getElementById('host-btn');
+            const refreshBtn = document.getElementById('refresh-btn');
+            const serverSelect = document.getElementById('server-select');
             const connectionStatusEl = document.getElementById('connection-status');
             const player1Label = document.getElementById('player1-label');
             const player2Label = document.getElementById('player2-label');
@@ -404,6 +624,14 @@
             const rpsResultEl = document.getElementById('rps-result');
             const score1El = document.getElementById('score1');
             const score2El = document.getElementById('score2');
+            
+            // 音乐控制元素
+            const musicControl = document.getElementById('music-control');
+            const musicInfo = document.getElementById('music-info');
+            const backgroundMusic = document.getElementById('background-music');
+            const volumeControl = document.getElementById('volume-control');
+            const volumeLevel = document.getElementById('volume-level');
+            const volumeKnob = document.getElementById('volume-knob');
             
             // 游戏状态
             const gameState = {
@@ -420,34 +648,130 @@
                 playerName: "玩家"
             };
             
-            // 初始化PeerJS连接
-            function initPeerConnection() {
-                // 创建新的Peer实例
-                gameState.peer = new Peer({
-                    host: 'peerjs.yehez.pro',
+            // 服务器配置
+            const serverConfigs = {
+                server1: {
+                    host: 'peerjs.yem.dev',
                     port: 443,
                     path: '/',
                     secure: true
+                },
+                server2: {
+                    host: '0.peerjs.com',
+                    port: 443,
+                    path: '/',
+                    secure: true
+                },
+                server3: {
+                    host: 'peerjs-server.herokuapp.com',
+                    port: 443,
+                    path: '/',
+                    secure: true
+                }
+            };
+            
+            // 初始化音乐控制
+            function initMusicControl() {
+                // 设置初始音量
+                backgroundMusic.volume = 0.5;
+                
+                // 音乐控制按钮点击事件
+                musicControl.addEventListener('click', function() {
+                    if (backgroundMusic.paused) {
+                        backgroundMusic.play();
+                        musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                    } else {
+                        backgroundMusic.pause();
+                        musicControl.innerHTML = '<i class="fas fa-music"></i>';
+                    }
+                    
+                    // 显示/隐藏音乐信息面板
+                    musicInfo.classList.toggle('show');
                 });
                 
-                gameState.peer.on('open', function(id) {
-                    myPeerIdEl.textContent = id;
-                    connectionStatusEl.innerHTML = `<i class="fas fa-check-circle"></i> 已准备好连接！`;
-                    copyIdBtn.disabled = false;
-                    connectBtn.disabled = false;
-                    hostBtn.disabled = false;
+                // 音量控制
+                let isDragging = false;
+                
+                volumeControl.addEventListener('click', function(e) {
+                    const rect = volumeControl.getBoundingClientRect();
+                    const percent = (e.clientX - rect.left) / rect.width;
+                    setVolume(percent);
                 });
                 
-                gameState.peer.on('connection', function(connection) {
-                    // 接受传入连接
-                    connectionStatusEl.innerHTML = `<i class="fas fa-plug"></i> 收到来自 ${connection.peer} 的连接请求...`;
-                    setupConnection(connection);
+                volumeKnob.addEventListener('mousedown', function() {
+                    isDragging = true;
                 });
                 
-                gameState.peer.on('error', function(err) {
-                    console.error('PeerJS错误:', err);
-                    connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 发生错误: ${err.type}`;
+                document.addEventListener('mousemove', function(e) {
+                    if (isDragging) {
+                        const rect = volumeControl.getBoundingClientRect();
+                        let percent = (e.clientX - rect.left) / rect.width;
+                        percent = Math.max(0, Math.min(1, percent));
+                        setVolume(percent);
+                    }
                 });
+                
+                document.addEventListener('mouseup', function() {
+                    isDragging = false;
+                });
+                
+                // 设置音量函数
+                function setVolume(percent) {
+                    backgroundMusic.volume = percent;
+                    volumeLevel.style.width = (percent * 100) + '%';
+                    volumeKnob.style.left = (percent * 100) + '%';
+                }
+            }
+            
+            // 初始化PeerJS连接
+            function initPeerConnection() {
+                // 清除现有连接
+                if (gameState.peer) {
+                    gameState.peer.destroy();
+                }
+                
+                // 获取选中的服务器配置
+                const selectedServer = serverSelect.value;
+                const config = serverConfigs[selectedServer];
+                
+                connectionStatusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 正在连接服务器 (${selectedServer})...`;
+                myPeerIdEl.textContent = "正在连接服务器...";
+                myPeerIdEl.classList.add('loading');
+                copyIdBtn.disabled = true;
+                
+                // 创建新的Peer实例
+                try {
+                    gameState.peer = new Peer(config);
+                    
+                    gameState.peer.on('open', function(id) {
+                        myPeerIdEl.textContent = id;
+                        myPeerIdEl.classList.remove('loading');
+                        connectionStatusEl.innerHTML = `<i class="fas fa-check-circle"></i> 已连接到服务器 (${selectedServer})！`;
+                        copyIdBtn.disabled = false;
+                        connectBtn.disabled = false;
+                        hostBtn.disabled = false;
+                    });
+                    
+                    gameState.peer.on('connection', function(connection) {
+                        // 接受传入连接
+                        connectionStatusEl.innerHTML = `<i class="fas fa-plug"></i> 收到来自 ${connection.peer} 的连接请求...`;
+                        setupConnection(connection);
+                    });
+                    
+                    gameState.peer.on('error', function(err) {
+                        console.error('PeerJS错误:', err);
+                        connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 服务器错误: ${err.type}`;
+                        myPeerIdEl.textContent = "连接失败，请尝试其他服务器";
+                        myPeerIdEl.classList.remove('loading');
+                        copyIdBtn.disabled = true;
+                    });
+                } catch (e) {
+                    console.error('PeerJS初始化错误:', e);
+                    connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 初始化失败: ${e.message}`;
+                    myPeerIdEl.textContent = "初始化失败，请刷新页面";
+                    myPeerIdEl.classList.remove('loading');
+                    copyIdBtn.disabled = true;
+                }
             }
             
             // 设置连接
@@ -635,6 +959,7 @@
                 // 更新UI
                 updateScores();
                 rpsResultEl.innerHTML = resultHtml;
+                rpsResultEl.classList.add('game-result-animation');
                 playAgainBtn.classList.remove('hidden');
                 confirmBtn.classList.add('hidden');
                 
@@ -663,6 +988,7 @@
                 
                 // 显示选择提示
                 rpsResultEl.innerHTML = `<i class="fas fa-info-circle"></i> 请选择你的出拳...`;
+                rpsResultEl.classList.remove('game-result-animation');
                 
                 // 切换按钮状态
                 playAgainBtn.classList.add('hidden');
@@ -724,7 +1050,7 @@
             // 复制ID
             copyIdBtn.addEventListener('click', function() {
                 const id = myPeerIdEl.textContent;
-                if (id && id !== "正在生成ID...") {
+                if (id && id !== "正在生成ID..." && id !== "正在连接服务器...") {
                     navigator.clipboard.writeText(id)
                         .then(() => {
                             const originalText = copyIdBtn.innerHTML;
@@ -737,6 +1063,16 @@
                             console.error('复制失败:', err);
                         });
                 }
+            });
+            
+            // 刷新连接
+            refreshBtn.addEventListener('click', function() {
+                initPeerConnection();
+            });
+            
+            // 服务器选择变化
+            serverSelect.addEventListener('change', function() {
+                initPeerConnection();
             });
             
             // 辅助函数
@@ -753,6 +1089,7 @@
             }
             
             // 初始化
+            initMusicControl();
             initPeerConnection();
         });
     </script>
