@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我知道你 - 双人联机石头剪刀布</title>
+    <title>我知道你 - 双人联机问答挑战</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
@@ -27,6 +27,7 @@
             --text-light: #ffffff;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --gold: #FFD700;
         }
 
         body {
@@ -38,6 +39,18 @@
             padding: 20px;
             color: var(--text-light);
             overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+            z-index: -1;
         }
         
         .container {
@@ -45,7 +58,7 @@
             backdrop-filter: blur(12px);
             border-radius: 24px;
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             padding: 30px;
             box-shadow: var(--shadow);
             text-align: center;
@@ -55,21 +68,21 @@
         }
         
         .game-title {
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             text-align: center;
             margin-bottom: 10px;
             background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             font-weight: 900;
             letter-spacing: 1px;
         }
         
         h1 {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             margin-bottom: 20px;
-            color: #FFEB3B;
+            color: var(--gold);
             position: relative;
             padding-bottom: 15px;
         }
@@ -89,7 +102,7 @@
         h2 {
             font-size: 1.8rem;
             margin: 20px 0;
-            color: #FFEB3B;
+            color: var(--gold);
             font-weight: 600;
         }
         
@@ -119,14 +132,17 @@
         }
 
         .score-value {
-            font-size: 2rem;
-            width: 50px;
-            height: 50px;
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.15);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            font-weight: 700;
         }
 
         .players {
@@ -169,13 +185,13 @@
         }
 
         .choice {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.5rem;
+            font-size: 3rem;
             cursor: pointer;
             background: rgba(255, 255, 255, 0.15);
             transition: var(--transition);
@@ -192,8 +208,14 @@
         
         .choice.selected {
             transform: scale(1.1);
-            border: 3px solid #FFEB3B;
+            border: 3px solid var(--gold);
             box-shadow: 0 0 20px rgba(255, 235, 59, 0.5);
+            animation: pulse 1s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { box-shadow: 0 0 15px rgba(255, 235, 59, 0.5); }
+            to { box-shadow: 0 0 30px rgba(255, 235, 59, 0.8); }
         }
 
         #rock { color: #FF5252; }
@@ -357,73 +379,67 @@
         
         .music-control i {
             font-size: 1.5rem;
-            color: #FFEB3B;
+            color: var(--gold);
         }
         
-        .music-info {
+        .sound-control {
             position: absolute;
             top: 80px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 12px;
-            padding: 15px;
-            width: 200px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transform: translateY(20px);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s ease;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            transition: all 0.3s ease;
         }
         
-        .music-info.show {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
+        .sound-control:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
         }
         
-        .music-info h4 {
-            color: #FFEB3B;
-            margin-bottom: 10px;
+        .sound-control i {
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+        
+        .round-indicator {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--gold);
+            font-weight: 600;
+        }
+        
+        .game-result-animation {
+            animation: resultPulse 1s infinite alternate;
+        }
+        
+        @keyframes resultPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+        
+        .status-indicator {
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 15px 0;
+            display: inline-block;
             font-size: 1.2rem;
         }
         
-        .music-info p {
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            line-height: 1.4;
+        .status-waiting {
+            background: rgba(255, 235, 59, 0.2);
         }
         
-        .volume-control {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            margin-top: 10px;
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .volume-level {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 70%;
-            background: linear-gradient(to right, #FF9800, #FF5722);
-            border-radius: 4px;
-        }
-        
-        .volume-knob {
-            position: absolute;
-            top: -4px;
-            left: 70%;
-            width: 16px;
-            height: 16px;
-            background: #FFEB3B;
-            border-radius: 50%;
-            transform: translateX(-50%);
-            cursor: grab;
+        .status-active {
+            background: rgba(76, 175, 80, 0.2);
         }
         
         .wechat-share {
@@ -458,33 +474,92 @@
             color: #07C160;
         }
         
-        .game-result-animation {
-            animation: resultPulse 1s infinite alternate;
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
         
-        @keyframes resultPulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+        
+        .mobile-tip {
+            display: none;
+            background: rgba(255, 235, 59, 0.2);
+            border-radius: 12px;
+            padding: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2.8rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .players {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .player {
+                width: 100%;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+                margin: 10px 0;
+            }
+            
+            .mobile-tip {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="floating-particles" id="particles"></div>
+    
     <div class="container">
         <div class="game-title">我知道你</div>
-        <h1><i class="fas fa-gamepad"></i> 双人联机·石头剪刀布</h1>
+        <h1><i class="fas fa-gamepad"></i> 双人联机问答挑战</h1>
         
         <!-- 音乐控制 -->
         <div class="music-control" id="music-control">
             <i class="fas fa-music"></i>
         </div>
         
-        <div class="music-info" id="music-info">
-            <h4>背景音乐</h4>
-            <p>ninelie - 钢琴版</p>
-            <div class="volume-control" id="volume-control">
-                <div class="volume-level" id="volume-level"></div>
-                <div class="volume-knob" id="volume-knob"></div>
-            </div>
+        <!-- 音效控制 -->
+        <div class="sound-control" id="sound-control">
+            <i class="fas fa-volume-up"></i>
         </div>
         
         <!-- 连接区域 -->
@@ -500,14 +575,14 @@
             <div class="form-group">
                 <label>输入对方的玩家 ID:</label>
                 <input type="text" id="remote-peer-id" placeholder="在此输入对方的玩家 ID">
-                <button id="connect-btn" class="mt-15"><i class="fas fa-link"></i> 连接到对方</button>
+                <button id="connect-btn"><i class="fas fa-link"></i> 连接到对方</button>
             </div>
             
             <div class="form-group">
                 <label>选择服务器:</label>
                 <select id="server-select" class="server-select">
-                    <option value="server1">服务器1 (推荐)</option>
-                    <option value="server2">服务器2</option>
+                    <option value="server1">服务器1</option>
+                    <option value="server2" selected>服务器2 (推荐)</option>
                     <option value="server3">服务器3</option>
                 </select>
             </div>
@@ -518,6 +593,10 @@
             
             <button id="host-btn"><i class="fas fa-user-plus"></i> 创建新房间</button>
             <button id="refresh-btn"><i class="fas fa-sync-alt"></i> 刷新连接</button>
+            
+            <div class="mobile-tip">
+                <i class="fas fa-mobile-alt"></i> 在移动设备上建议使用Chrome或Safari浏览器
+            </div>
             
             <div class="wechat-share">
                 <h3><i class="fab fa-weixin"></i> 微信分享指南</h3>
@@ -545,7 +624,7 @@
                 </div>
             </div>
             
-            <h2 id="game-status">准备开始游戏</h2>
+            <div class="round-indicator">第 <span id="current-round">1</span> 回合 / 共 5 回合</div>
 
             <div class="players">
                 <div class="player" id="player1">
@@ -598,9 +677,53 @@
     <audio id="background-music" loop>
         <source src="https://cdn.pixabay.com/download/audio/2022/03/19/audio_6d1a1f4e95.mp3?filename=relaxing-piano-music-zen-11148.mp3" type="audio/mpeg">
     </audio>
+    
+    <!-- 游戏音效 -->
+    <audio id="click-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg"></audio>
+    <audio id="choice-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-game-ball-tap-2073.mp3" type="audio/mpeg"></audio>
+    <audio id="win-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg"></audio>
+    <audio id="lose-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-sad-game-over-667.mp3" type="audio/mpeg"></audio>
+    <audio id="draw-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-game-show-suspense-waiting-667.mp3" type="audio/mpeg"></audio>
+    <audio id="question-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkles-3004.mp3" type="audio/mpeg"></audio>
+    <audio id="answer-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-typewriter-key-1-1123.mp3" type="audio/mpeg"></audio>
+    <audio id="match-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3" type="audio/mpeg"></audio>
+    <audio id="mismatch-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg"></audio>
+    <audio id="next-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-game-show-buzz-in-669.mp3" type="audio/mpeg"></audio>
+    <audio id="error-sound"><source src="https://assets.mixkit.co/sfx/preview/mixkit-warning-alarm-990.mp3" type="audio/mpeg"></audio>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 创建漂浮粒子
+            function createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                const particleCount = 30;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // 随机属性
+                    const size = Math.random() * 10 + 5;
+                    const posX = Math.random() * 100;
+                    const posY = Math.random() * 100;
+                    const animationDuration = Math.random() * 20 + 10;
+                    const animationDelay = Math.random() * 5;
+                    const hue = Math.random() * 360;
+                    
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${posX}%`;
+                    particle.style.top = `${posY}%`;
+                    particle.style.background = `hsla(${hue}, 100%, 70%, 0.5)`;
+                    particle.style.animationDuration = `${animationDuration}s`;
+                    particle.style.animationDelay = `${animationDelay}s`;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            createParticles();
+            
             // DOM元素
             const connectionSection = document.getElementById('connection-section');
             const gameSection = document.getElementById('game-section');
@@ -624,14 +747,7 @@
             const rpsResultEl = document.getElementById('rps-result');
             const score1El = document.getElementById('score1');
             const score2El = document.getElementById('score2');
-            
-            // 音乐控制元素
-            const musicControl = document.getElementById('music-control');
-            const musicInfo = document.getElementById('music-info');
-            const backgroundMusic = document.getElementById('background-music');
-            const volumeControl = document.getElementById('volume-control');
-            const volumeLevel = document.getElementById('volume-level');
-            const volumeKnob = document.getElementById('volume-knob');
+            const currentRoundEl = document.getElementById('current-round');
             
             // 游戏状态
             const gameState = {
@@ -640,12 +756,15 @@
                 playerChoice: null,
                 opponentChoice: null,
                 rpsWinner: null,
-                round: 1,
+                currentRound: 1,
+                maxRounds: 5,
                 scores: [0, 0],
                 isHost: false,
                 currentPlayer: "player1",
                 opponentPlayerName: "对手",
-                playerName: "玩家"
+                playerName: "玩家",
+                musicEnabled: true,
+                soundEnabled: true
             };
             
             // 服务器配置
@@ -672,11 +791,16 @@
             
             // 初始化音乐控制
             function initMusicControl() {
+                const musicControl = document.getElementById('music-control');
+                const soundControl = document.getElementById('sound-control');
+                const backgroundMusic = document.getElementById('background-music');
+                
                 // 设置初始音量
-                backgroundMusic.volume = 0.5;
+                backgroundMusic.volume = 0.4;
                 
                 // 音乐控制按钮点击事件
                 musicControl.addEventListener('click', function() {
+                    playSound('click');
                     if (backgroundMusic.paused) {
                         backgroundMusic.play();
                         musicControl.innerHTML = '<i class="fas fa-pause"></i>';
@@ -684,42 +808,31 @@
                         backgroundMusic.pause();
                         musicControl.innerHTML = '<i class="fas fa-music"></i>';
                     }
-                    
-                    // 显示/隐藏音乐信息面板
-                    musicInfo.classList.toggle('show');
                 });
                 
-                // 音量控制
-                let isDragging = false;
-                
-                volumeControl.addEventListener('click', function(e) {
-                    const rect = volumeControl.getBoundingClientRect();
-                    const percent = (e.clientX - rect.left) / rect.width;
-                    setVolume(percent);
+                // 音效控制按钮点击事件
+                soundControl.addEventListener('click', function() {
+                    playSound('click');
+                    gameState.soundEnabled = !gameState.soundEnabled;
+                    soundControl.innerHTML = gameState.soundEnabled ? 
+                        '<i class="fas fa-volume-up"></i>' : 
+                        '<i class="fas fa-volume-mute"></i>';
                 });
                 
-                volumeKnob.addEventListener('mousedown', function() {
-                    isDragging = true;
+                // 尝试自动播放音乐
+                backgroundMusic.play().catch(e => {
+                    console.log("自动播放被阻止，需要用户交互");
                 });
+            }
+            
+            // 播放音效
+            function playSound(soundType) {
+                if (!gameState.soundEnabled) return;
                 
-                document.addEventListener('mousemove', function(e) {
-                    if (isDragging) {
-                        const rect = volumeControl.getBoundingClientRect();
-                        let percent = (e.clientX - rect.left) / rect.width;
-                        percent = Math.max(0, Math.min(1, percent));
-                        setVolume(percent);
-                    }
-                });
-                
-                document.addEventListener('mouseup', function() {
-                    isDragging = false;
-                });
-                
-                // 设置音量函数
-                function setVolume(percent) {
-                    backgroundMusic.volume = percent;
-                    volumeLevel.style.width = (percent * 100) + '%';
-                    volumeKnob.style.left = (percent * 100) + '%';
+                const sound = document.getElementById(`${soundType}-sound`);
+                if (sound) {
+                    sound.currentTime = 0;
+                    sound.play().catch(e => console.log("音效播放失败:", e));
                 }
             }
             
@@ -750,12 +863,14 @@
                         copyIdBtn.disabled = false;
                         connectBtn.disabled = false;
                         hostBtn.disabled = false;
+                        playSound('click');
                     });
                     
                     gameState.peer.on('connection', function(connection) {
                         // 接受传入连接
                         connectionStatusEl.innerHTML = `<i class="fas fa-plug"></i> 收到来自 ${connection.peer} 的连接请求...`;
                         setupConnection(connection);
+                        playSound('click');
                     });
                     
                     gameState.peer.on('error', function(err) {
@@ -764,6 +879,7 @@
                         myPeerIdEl.textContent = "连接失败，请尝试其他服务器";
                         myPeerIdEl.classList.remove('loading');
                         copyIdBtn.disabled = true;
+                        playSound('error');
                     });
                 } catch (e) {
                     console.error('PeerJS初始化错误:', e);
@@ -771,6 +887,7 @@
                     myPeerIdEl.textContent = "初始化失败，请刷新页面";
                     myPeerIdEl.classList.remove('loading');
                     copyIdBtn.disabled = true;
+                    playSound('error');
                 }
             }
             
@@ -799,47 +916,28 @@
                     connectionSection.classList.add('hidden');
                     gameSection.classList.remove('hidden');
                     
-                    // 如果我们是主机，发送游戏状态
-                    if (gameState.isHost) {
-                        sendGameData({
-                            type: "start",
-                            host: true,
-                            scores: gameState.scores
-                        });
-                    } else {
-                        // 非主机等待主机开始游戏
-                        gameStatusEl.innerHTML = "等待主机开始游戏...";
-                        confirmBtn.disabled = true;
-                    }
-                    
-                    // 设置当前玩家状态
-                    document.getElementById('player1').classList.add('active');
+                    // 开始游戏
+                    startNewRound();
+                    playSound('start');
                 });
                 
                 connection.on('close', function() {
                     connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 连接已断开`;
                     gameSection.classList.add('hidden');
                     connectionSection.classList.remove('hidden');
+                    playSound('error');
                 });
                 
                 connection.on('error', function(err) {
                     console.error('连接错误:', err);
                     connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 连接错误: ${err}`;
+                    playSound('error');
                 });
             }
             
             // 处理传入数据
             function handleIncomingData(data) {
                 switch(data.type) {
-                    case "start":
-                        // 开始游戏
-                        gameState.isHost = false;
-                        gameState.scores = data.scores || [0, 0];
-                        updateScores();
-                        gameStatusEl.innerHTML = "游戏开始！请选择出拳";
-                        confirmBtn.disabled = false;
-                        break;
-                        
                     case "choice":
                         // 对手已选择
                         gameState.opponentChoice = data.choice;
@@ -849,6 +947,7 @@
                         } else {
                             rpsResultEl.innerHTML = `<i class="fas fa-info-circle"></i> 对手已选择出拳，请选择你的出拳`;
                         }
+                        playSound('choice');
                         break;
                         
                     case "result":
@@ -858,6 +957,14 @@
                         rpsResultEl.innerHTML = data.resultHtml;
                         playAgainBtn.classList.remove('hidden');
                         confirmBtn.classList.add('hidden');
+                        playSound(data.resultType);
+                        break;
+                        
+                    case "start":
+                        // 开始新的一局
+                        gameState.currentRound = data.round;
+                        startNewRound();
+                        playSound('next');
                         break;
                 }
             }
@@ -871,11 +978,40 @@
                 return false;
             }
             
+            // 开始新的一局
+            function startNewRound() {
+                // 重置游戏状态
+                gameState.playerChoice = null;
+                gameState.opponentChoice = null;
+                document.querySelectorAll('.choice').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                
+                // 更新回合显示
+                currentRoundEl.textContent = gameState.currentRound;
+                
+                // 显示选择提示
+                rpsResultEl.innerHTML = `<i class="fas fa-info-circle"></i> 请选择你的出拳...`;
+                
+                // 切换按钮状态
+                playAgainBtn.classList.add('hidden');
+                confirmBtn.classList.remove('hidden');
+                
+                // 通知主机开始新的一局
+                if (gameState.isHost) {
+                    sendGameData({
+                        type: "start",
+                        round: gameState.currentRound
+                    });
+                }
+            }
+            
             // 选择石头剪刀布
             document.querySelectorAll('.choice').forEach(choice => {
                 choice.addEventListener('click', function() {
                     if (!gameState.connection || !gameState.connection.open) {
                         rpsResultEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 请先建立连接`;
+                        playSound('error');
                         return;
                     }
                     
@@ -889,6 +1025,7 @@
                     // 设置新选择
                     this.classList.add('selected');
                     gameState.playerChoice = choiceValue;
+                    playSound('choice');
                     
                     // 通知对手
                     sendGameData({
@@ -910,6 +1047,7 @@
             confirmBtn.addEventListener('click', function() {
                 if (!gameState.playerChoice) {
                     rpsResultEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 请先选择出拳！`;
+                    playSound('error');
                     return;
                 }
                 
@@ -919,6 +1057,7 @@
                 }
                 
                 revealOutcome();
+                playSound('confirm');
             });
             
             // 揭示结果
@@ -929,8 +1068,12 @@
                 // 更新分数
                 if (winner === 'player1') {
                     gameState.scores[0]++;
+                    playSound('win');
                 } else if (winner === 'player2') {
                     gameState.scores[1]++;
+                    playSound('lose');
+                } else {
+                    playSound('draw');
                 }
                 
                 // 构建结果HTML
@@ -959,7 +1102,6 @@
                 // 更新UI
                 updateScores();
                 rpsResultEl.innerHTML = resultHtml;
-                rpsResultEl.classList.add('game-result-animation');
                 playAgainBtn.classList.remove('hidden');
                 confirmBtn.classList.add('hidden');
                 
@@ -967,7 +1109,8 @@
                 sendGameData({
                     type: "result",
                     resultHtml: resultHtml,
-                    scores: gameState.scores
+                    scores: gameState.scores,
+                    resultType: winner === 'draw' ? 'draw' : winner === 'player1' ? 'win' : 'lose'
                 });
             }
             
@@ -979,29 +1122,41 @@
             
             // 再来一局
             playAgainBtn.addEventListener('click', function() {
-                // 重置游戏状态
-                gameState.playerChoice = null;
-                gameState.opponentChoice = null;
-                document.querySelectorAll('.choice').forEach(el => {
-                    el.classList.remove('selected');
-                });
+                gameState.currentRound++;
                 
-                // 显示选择提示
-                rpsResultEl.innerHTML = `<i class="fas fa-info-circle"></i> 请选择你的出拳...`;
-                rpsResultEl.classList.remove('game-result-animation');
-                
-                // 切换按钮状态
-                playAgainBtn.classList.add('hidden');
-                confirmBtn.classList.remove('hidden');
-                
-                // 通知主机开始新的一局
-                if (gameState.isHost) {
-                    sendGameData({
-                        type: "start",
-                        host: true,
-                        scores: gameState.scores
-                    });
+                if (gameState.currentRound > gameState.maxRounds) {
+                    // 游戏结束
+                    let winnerText = "";
+                    if (gameState.scores[0] > gameState.scores[1]) {
+                        winnerText = "你赢了！";
+                        playSound('win');
+                    } else if (gameState.scores[0] < gameState.scores[1]) {
+                        winnerText = "对手赢了！";
+                        playSound('lose');
+                    } else {
+                        winnerText = "平局！";
+                        playSound('draw');
+                    }
+                    
+                    rpsResultEl.innerHTML = `
+                        <div class="result-content">
+                            <div style="font-size: 1.5rem; color: #FFEB3B; margin-bottom: 15px;">游戏结束！</div>
+                            <div>最终得分: 
+                                <strong>${gameState.scores[0]}</strong> - 
+                                <strong>${gameState.scores[1]}</strong>
+                            </div>
+                            <div style="margin-top: 20px; font-size: 1.3rem;">
+                                ${winnerText}
+                            </div>
+                        </div>
+                    `;
+                    playAgainBtn.classList.add('hidden');
+                    disconnectBtn.textContent = "返回主菜单";
+                    return;
                 }
+                
+                startNewRound();
+                playSound('next');
             });
             
             // 断开连接
@@ -1012,6 +1167,7 @@
                 }
                 gameSection.classList.add('hidden');
                 connectionSection.classList.remove('hidden');
+                playSound('click');
             });
             
             // 连接到对方
@@ -1019,24 +1175,22 @@
                 const remoteId = remotePeerIdEl.value.trim();
                 if (!remoteId) {
                     connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 请输入对方的ID`;
+                    playSound('error');
                     return;
                 }
                 
                 if (remoteId === gameState.peer?.id) {
                     connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 不能与自己连接`;
+                    playSound('error');
                     return;
                 }
                 
                 connectionStatusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 正在连接...`;
+                playSound('click');
                 
                 // 尝试连接
                 const connection = gameState.peer.connect(remoteId);
                 setupConnection(connection);
-                
-                // 设置玩家名称
-                gameState.playerName = "玩家" + Math.floor(Math.random() * 100);
-                currentPlayerName.textContent = gameState.playerName;
-                gameState.isHost = false;
             });
             
             // 创建房间
@@ -1044,7 +1198,7 @@
                 gameState.isHost = true;
                 connectionStatusEl.innerHTML = `<i class="fas fa-user-friends"></i> 你已创建房间，等待其他人连接...`;
                 hostBtn.disabled = true;
-                connectBtn.disabled = true;
+                playSound('click');
             });
             
             // 复制ID
@@ -1063,16 +1217,19 @@
                             console.error('复制失败:', err);
                         });
                 }
+                playSound('click');
             });
             
             // 刷新连接
             refreshBtn.addEventListener('click', function() {
                 initPeerConnection();
+                playSound('click');
             });
             
             // 服务器选择变化
             serverSelect.addEventListener('change', function() {
                 initPeerConnection();
+                playSound('click');
             });
             
             // 辅助函数
