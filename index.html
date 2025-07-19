@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我知道你 - 双人联机问答挑战</title>
+    <title>时尚动漫角色双人问答挑战</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
@@ -28,6 +28,8 @@
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             --gold: #FFD700;
+            --pink: #FF4081;
+            --purple: #7C4DFF;
         }
 
         body {
@@ -55,10 +57,10 @@
         
         .container {
             background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(20px);
             border-radius: 24px;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             padding: 30px;
             box-shadow: var(--shadow);
             text-align: center;
@@ -74,7 +76,7 @@
             background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             font-weight: 900;
             letter-spacing: 1px;
         }
@@ -176,7 +178,7 @@
         }
 
         .player.active {
-            background: rgba(255, 235, 59, 0.15);
+            background: rgba(255, 235, 59, 0.2);
             box-shadow: 0 0 20px rgba(255, 235, 59, 0.4);
         }
         
@@ -421,16 +423,18 @@
         }
         
         @keyframes resultPulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
+            from { transform: scale(1); box-shadow: 0 0 20px rgba(255, 235, 59, 0.7); }
+            to { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 235, 59, 0.9); }
         }
         
         .status-indicator {
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 25px;
             background: rgba(255, 255, 255, 0.1);
-            margin: 10px 0;
+            margin: 15px 0;
             display: inline-block;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         
         .status-waiting {
@@ -441,7 +445,7 @@
             background: rgba(76, 175, 80, 0.2);
         }
         
-        .question-section {
+        .character-selection {
             margin: 25px 0;
             padding: 20px;
             background: rgba(255, 255, 255, 0.05);
@@ -449,135 +453,139 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .question-input {
-            width: 100%;
-            padding: 15px;
+        .characters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .character {
+            width: 100px;
+            height: 120px;
             border-radius: 16px;
-            border: none;
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
-            font-size: 1.2rem;
-            margin: 15px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .character:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .character.selected {
+            background: rgba(255, 235, 59, 0.2);
+            box-shadow: 0 0 15px rgba(255, 235, 59, 0.4);
+            border: 2px solid var(--gold);
+        }
+        
+        .character-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .character-name {
+            font-size: 0.9rem;
             text-align: center;
         }
         
-        .question-display {
+        .leaderboard-section {
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .leaderboard {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 16px;
-            padding: 20px;
-            margin: 20px 0;
-            font-size: 1.4rem;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-        }
-        
-        .answer-section {
-            margin: 25px 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .answer-input {
-            width: 100%;
             padding: 15px;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
-            border: none;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+        
+        .leaderboard-item:hover {
             background: rgba(255, 255, 255, 0.15);
-            color: white;
+            transform: translateX(5px);
+        }
+        
+        .rank {
             font-size: 1.2rem;
-            margin: 15px 0;
-            text-align: center;
-        }
-        
-        .answers {
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
             display: flex;
-            justify-content: space-around;
-            gap: 20px;
-            margin: 25px 0;
-        }
-        
-        .answer-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 20px;
-            width: 48%;
-            min-height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--purple);
         }
         
-        .answer-card h4 {
-            margin-bottom: 15px;
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .player-character {
+            font-size: 1.8rem;
+        }
+        
+        .player-score {
+            font-weight: bold;
             color: var(--gold);
-        }
-        
-        .answer-content {
             font-size: 1.3rem;
-            font-weight: 500;
-            min-height: 60px;
+        }
+        
+        .leaderboard-header {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
         
-        .reveal-section {
-            margin: 25px 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .reveal-result {
-            margin: 25px 0;
-            padding: 20px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            font-size: 1.3rem;
-            min-height: 100px;
+        .tabs {
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            line-height: 1.5;
+            margin: 20px 0;
+            gap: 10px;
         }
         
-        .wechat-share {
-            background: rgba(7, 193, 96, 0.2);
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 20px;
-            text-align: center;
+        .tab {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
         }
         
-        .wechat-share h3 {
-            color: #07C160;
-            margin-bottom: 10px;
-        }
-        
-        .wechat-share p {
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-        
-        .mobile-tip {
-            display: none;
-            background: rgba(255, 235, 59, 0.2);
-            border-radius: 12px;
-            padding: 10px;
-            margin-top: 15px;
-            text-align: center;
+        .tab.active {
+            background: var(--pink);
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
         }
         
         @media (max-width: 768px) {
@@ -586,7 +594,7 @@
             }
             
             h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             
             .container {
@@ -612,16 +620,17 @@
                 margin: 10px 0;
             }
             
-            .mobile-tip {
-                display: block;
+            .character {
+                width: 80px;
+                height: 100px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="game-title">我知道你</div>
-        <h1><i class="fas fa-gamepad"></i> 双人联机问答挑战</h1>
+        <div class="game-title">时尚动漫角色问答挑战</div>
+        <h1><i class="fas fa-gamepad"></i> 双人联机问答游戏</h1>
         
         <!-- 音乐控制 -->
         <div class="music-control" id="music-control">
@@ -633,8 +642,44 @@
             <i class="fas fa-volume-up"></i>
         </div>
         
+        <!-- 角色选择区域 -->
+        <div id="character-section">
+            <h2><i class="fas fa-user-ninja"></i> 选择你的动漫角色</h2>
+            
+            <div class="character-selection">
+                <div class="characters">
+                    <div class="character" data-character="levi">
+                        <div class="character-icon">🧥</div>
+                        <div class="character-name">利威尔</div>
+                    </div>
+                    <div class="character" data-character="gojo">
+                        <div class="character-icon">🕶️</div>
+                        <div class="character-name">五条悟</div>
+                    </div>
+                    <div class="character" data-character="rem">
+                        <div class="character-icon">💙</div>
+                        <div class="character-name">蕾姆</div>
+                    </div>
+                    <div class="character" data-character="asuna">
+                        <div class="character-icon">⚔️</div>
+                        <div class="character-name">亚丝娜</div>
+                    </div>
+                    <div class="character" data-character="kirito">
+                        <div class="character-icon">🗡️</div>
+                        <div class="character-name">桐人</div>
+                    </div>
+                    <div class="character" data-character="shinobu">
+                        <div class="character-icon">🦋</div>
+                        <div class="character-name">蝴蝶忍</div>
+                    </div>
+                </div>
+                
+                <button id="select-character-btn"><i class="fas fa-check"></i> 确认选择</button>
+            </div>
+        </div>
+
         <!-- 连接区域 -->
-        <div id="connection-section">
+        <div id="connection-section" class="hidden">
             <h2><i class="fas fa-plug"></i> 连接选项</h2>
             
             <div class="form-group">
@@ -652,8 +697,8 @@
             <div class="form-group">
                 <label>选择服务器:</label>
                 <select id="server-select" class="server-select">
-                    <option value="server1">服务器1</option>
-                    <option value="server2" selected>服务器2 (推荐)</option>
+                    <option value="server1">服务器1 (推荐)</option>
+                    <option value="server2">服务器2</option>
                     <option value="server3">服务器3</option>
                 </select>
             </div>
@@ -664,10 +709,6 @@
             
             <button id="host-btn"><i class="fas fa-user-plus"></i> 创建新房间</button>
             <button id="refresh-btn"><i class="fas fa-sync-alt"></i> 刷新连接</button>
-            
-            <div class="mobile-tip">
-                <i class="fas fa-mobile-alt"></i> 在移动设备上建议使用Chrome或Safari浏览器
-            </div>
             
             <div class="wechat-share">
                 <h3><i class="fab fa-weixin"></i> 微信分享指南</h3>
@@ -752,7 +793,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="reveal-result" id="reveal-result">
+                <div class="result" id="reveal-result">
                     <i class="fas fa-info-circle"></i> 等待揭示结果...
                 </div>
             </div>
@@ -761,10 +802,36 @@
                 <button id="confirm-btn"><i class="fas fa-check"></i> 确认</button>
                 <button id="next-round-btn" class="hidden"><i class="fas fa-arrow-right"></i> 下一回合</button>
                 <button id="disconnect-btn"><i class="fas fa-sign-out-alt"></i> 断开连接</button>
+                <button id="leaderboard-btn"><i class="fas fa-trophy"></i> 查看排行榜</button>
             </div>
             
             <div class="connection-info">
                 <p><i class="fas fa-link"></i> 已连接到玩家：<span id="connected-peer-id">尚未连接</span></p>
+            </div>
+        </div>
+        
+        <!-- 排行榜区域 -->
+        <div id="leaderboard-section" class="hidden">
+            <h2><i class="fas fa-trophy"></i> 排行榜</h2>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="global">全球排行榜</div>
+                <div class="tab" data-tab="today">今日最佳</div>
+                <div class="tab" data-tab="friends">好友排行榜</div>
+            </div>
+            
+            <div class="leaderboard-section">
+                <div class="leaderboard-header">
+                    <div>排名</div>
+                    <div>玩家</div>
+                    <div>分数</div>
+                </div>
+                
+                <div class="leaderboard" id="leaderboard-list">
+                    <!-- 排行榜内容将通过JS动态生成 -->
+                </div>
+                
+                <button id="back-to-game-btn"><i class="fas fa-arrow-left"></i> 返回游戏</button>
             </div>
         </div>
     </div>
@@ -789,43 +856,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // DOM元素
-            const connectionSection = document.getElementById('connection-section');
-            const gameSection = document.getElementById('game-section');
-            const myPeerIdEl = document.getElementById('my-peer-id');
-            const copyIdBtn = document.getElementById('copy-id-btn');
-            const remotePeerIdEl = document.getElementById('remote-peer-id');
-            const connectBtn = document.getElementById('connect-btn');
-            const hostBtn = document.getElementById('host-btn');
-            const refreshBtn = document.getElementById('refresh-btn');
-            const serverSelect = document.getElementById('server-select');
-            const connectionStatusEl = document.getElementById('connection-status');
-            const player1Label = document.getElementById('player1-label');
-            const player2Label = document.getElementById('player2-label');
-            const currentRoundEl = document.getElementById('current-round');
-            const maxRoundsEl = document.getElementById('max-rounds');
-            const gameStatusEl = document.getElementById('game-status');
-            const confirmBtn = document.getElementById('confirm-btn');
-            const nextRoundBtn = document.getElementById('next-round-btn');
-            const disconnectBtn = document.getElementById('disconnect-btn');
-            const rpsResultEl = document.getElementById('rps-result');
-            const score1El = document.getElementById('score1');
-            const score2El = document.getElementById('score2');
-            
-            // 游戏区域元素
-            const rpsSection = document.getElementById('rps-section');
-            const questionSection = document.getElementById('question-section');
-            const answerSection = document.getElementById('answer-section');
-            const revealSection = document.getElementById('reveal-section');
-            const questionInput = document.getElementById('question-input');
-            const questionDisplay = document.getElementById('question-display');
-            const currentQuestionEl = document.getElementById('current-question');
-            const answerInput = document.getElementById('answer-input');
-            const playerAnswerEl = document.getElementById('player-answer');
-            const opponentAnswerEl = document.getElementById('opponent-answer');
-            const revealResultEl = document.getElementById('reveal-result');
-            const questionerNameEl = document.getElementById('questioner-name');
-            
             // 游戏状态
             const gameState = {
                 peer: null,
@@ -845,29 +875,18 @@
                 opponentName: "对手",
                 musicEnabled: true,
                 soundEnabled: true,
-                currentPhase: "rps" // 当前阶段: rps/question/answer/reveal
+                selectedCharacter: null,
+                leaderboard: []
             };
             
-            // 服务器配置
-            const serverConfigs = {
-                server1: {
-                    host: 'peerjs.yem.dev',
-                    port: 443,
-                    path: '/',
-                    secure: true
-                },
-                server2: {
-                    host: '0.peerjs.com',
-                    port: 443,
-                    path: '/',
-                    secure: true
-                },
-                server3: {
-                    host: 'peerjs-server.herokuapp.com',
-                    port: 443,
-                    path: '/',
-                    secure: true
-                }
+            // 角色数据
+            const characters = {
+                levi: { name: "利威尔", icon: "🧥" },
+                gojo: { name: "五条悟", icon: "🕶️" },
+                rem: { name: "蕾姆", icon: "💙" },
+                asuna: { name: "亚丝娜", icon: "⚔️" },
+                kirito: { name: "桐人", icon: "🗡️" },
+                shinobu: { name: "蝴蝶忍", icon: "🦋" }
             };
             
             // 初始化音乐控制
@@ -877,7 +896,7 @@
                 const backgroundMusic = document.getElementById('background-music');
                 
                 // 设置初始音量
-                backgroundMusic.volume = 0.3;
+                backgroundMusic.volume = 0.4;
                 
                 // 音乐控制按钮点击事件
                 musicControl.addEventListener('click', function() {
@@ -895,11 +914,9 @@
                 soundControl.addEventListener('click', function() {
                     playSound('click');
                     gameState.soundEnabled = !gameState.soundEnabled;
-                    if (gameState.soundEnabled) {
-                        soundControl.innerHTML = '<i class="fas fa-volume-up"></i>';
-                    } else {
-                        soundControl.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    }
+                    soundControl.innerHTML = gameState.soundEnabled ? 
+                        '<i class="fas fa-volume-up"></i>' : 
+                        '<i class="fas fa-volume-mute"></i>';
                 });
                 
                 // 尝试自动播放音乐
@@ -919,54 +936,100 @@
                 }
             }
             
-            // 初始化PeerJS连接
-            function initPeerConnection() {
-                // 清除现有连接
-                if (gameState.peer) {
-                    gameState.peer.destroy();
+            // 角色选择
+            document.querySelectorAll('.character').forEach(char => {
+                char.addEventListener('click', function() {
+                    // 清除之前的选择
+                    document.querySelectorAll('.character').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // 设置新选择
+                    this.classList.add('selected');
+                    gameState.selectedCharacter = this.getAttribute('data-character');
+                });
+            });
+            
+            // 确认角色选择
+            document.getElementById('select-character-btn').addEventListener('click', function() {
+                playSound('click');
+                if (!gameState.selectedCharacter) {
+                    alert("请选择一个角色");
+                    return;
                 }
                 
+                document.getElementById('character-section').classList.add('hidden');
+                document.getElementById('connection-section').classList.remove('hidden');
+                
+                // 初始化连接
+                initPeerConnection();
+            });
+            
+            // 初始化PeerJS连接
+            function initPeerConnection() {
+                // 服务器配置
+                const serverConfigs = {
+                    server1: {
+                        host: 'peerjs.yem.dev',
+                        port: 443,
+                        path: '/',
+                        secure: true
+                    },
+                    server2: {
+                        host: '0.peerjs.com',
+                        port: 443,
+                        path: '/',
+                        secure: true
+                    },
+                    server3: {
+                        host: 'peerjs-server.herokuapp.com',
+                        port: 443,
+                        path: '/',
+                        secure: true
+                    }
+                };
+                
                 // 获取选中的服务器配置
-                const selectedServer = serverSelect.value;
+                const selectedServer = document.getElementById('server-select').value;
                 const config = serverConfigs[selectedServer];
                 
-                connectionStatusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 正在连接服务器 (${selectedServer})...`;
-                myPeerIdEl.textContent = "正在连接服务器...";
-                myPeerIdEl.classList.add('loading');
-                copyIdBtn.disabled = true;
+                document.getElementById('connection-status').innerHTML = `<i class="fas fa-spinner fa-spin"></i> 正在连接服务器 (${selectedServer})...`;
+                document.getElementById('my-peer-id').textContent = "正在连接服务器...";
+                document.getElementById('my-peer-id').classList.add('loading');
+                document.getElementById('copy-id-btn').disabled = true;
                 
                 // 创建新的Peer实例
                 try {
                     gameState.peer = new Peer(config);
                     
                     gameState.peer.on('open', function(id) {
-                        myPeerIdEl.textContent = id;
-                        myPeerIdEl.classList.remove('loading');
-                        connectionStatusEl.innerHTML = `<i class="fas fa-check-circle"></i> 已连接到服务器 (${selectedServer})！`;
-                        copyIdBtn.disabled = false;
-                        connectBtn.disabled = false;
-                        hostBtn.disabled = false;
+                        document.getElementById('my-peer-id').textContent = id;
+                        document.getElementById('my-peer-id').classList.remove('loading');
+                        document.getElementById('connection-status').innerHTML = `<i class="fas fa-check-circle"></i> 已连接到服务器 (${selectedServer})！`;
+                        document.getElementById('copy-id-btn').disabled = false;
+                        document.getElementById('connect-btn').disabled = false;
+                        document.getElementById('host-btn').disabled = false;
                     });
                     
                     gameState.peer.on('connection', function(connection) {
                         // 接受传入连接
-                        connectionStatusEl.innerHTML = `<i class="fas fa-plug"></i> 收到来自 ${connection.peer} 的连接请求...`;
+                        document.getElementById('connection-status').innerHTML = `<i class="fas fa-plug"></i> 收到来自 ${connection.peer} 的连接请求...`;
                         setupConnection(connection);
                     });
                     
                     gameState.peer.on('error', function(err) {
                         console.error('PeerJS错误:', err);
-                        connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 服务器错误: ${err.type}`;
-                        myPeerIdEl.textContent = "连接失败，请尝试其他服务器";
-                        myPeerIdEl.classList.remove('loading');
-                        copyIdBtn.disabled = true;
+                        document.getElementById('connection-status').innerHTML = `<i class="fas fa-exclamation-triangle"></i> 服务器错误: ${err.type}`;
+                        document.getElementById('my-peer-id').textContent = "连接失败，请尝试其他服务器";
+                        document.getElementById('my-peer-id').classList.remove('loading');
+                        document.getElementById('copy-id-btn').disabled = true;
                     });
                 } catch (e) {
                     console.error('PeerJS初始化错误:', e);
-                    connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 初始化失败: ${e.message}`;
-                    myPeerIdEl.textContent = "初始化失败，请刷新页面";
-                    myPeerIdEl.classList.remove('loading');
-                    copyIdBtn.disabled = true;
+                    document.getElementById('connection-status').innerHTML = `<i class="fas fa-exclamation-triangle"></i> 初始化失败: ${e.message}`;
+                    document.getElementById('my-peer-id').textContent = "初始化失败，请刷新页面";
+                    document.getElementById('my-peer-id').classList.remove('loading');
+                    document.getElementById('copy-id-btn').disabled = true;
                 }
             }
             
@@ -985,97 +1048,41 @@
                 connection.on('data', handleIncomingData);
                 
                 connection.on('open', function() {
-                    connectionStatusEl.innerHTML = `<i class="fas fa-check-circle"></i> 已成功连接到 ${connection.peer}！`;
+                    document.getElementById('connection-status').innerHTML = `<i class="fas fa-check-circle"></i> 已成功连接到 ${connection.peer}！`;
                     
                     // 设置玩家名称
                     const playerNum = Math.floor(Math.random() * 100);
-                    player1Label.textContent = `玩家${playerNum}`;
-                    player2Label.textContent = `玩家${playerNum + 1}`;
+                    document.getElementById('player1-label').textContent = `玩家${playerNum}`;
+                    document.getElementById('player2-label').textContent = `玩家${playerNum + 1}`;
                     
                     // 切换到游戏界面
-                    connectionSection.classList.add('hidden');
-                    gameSection.classList.remove('hidden');
+                    document.getElementById('connection-section').classList.add('hidden');
+                    document.getElementById('game-section').classList.remove('hidden');
                     
                     // 设置最大回合数
-                    maxRoundsEl.textContent = gameState.maxRounds;
+                    document.getElementById('max-rounds').textContent = gameState.maxRounds;
                     
                     // 开始游戏
                     startNewRound();
+                    playSound('start');
                 });
                 
                 connection.on('close', function() {
-                    connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 连接已断开`;
-                    gameSection.classList.add('hidden');
-                    connectionSection.classList.remove('hidden');
+                    document.getElementById('connection-status').innerHTML = `<i class="fas fa-exclamation-triangle"></i> 连接已断开`;
+                    document.getElementById('game-section').classList.add('hidden');
+                    document.getElementById('connection-section').classList.remove('hidden');
                 });
                 
                 connection.on('error', function(err) {
                     console.error('连接错误:', err);
-                    connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 连接错误: ${err}`;
+                    document.getElementById('connection-status').innerHTML = `<i class="fas fa-exclamation-triangle"></i> 连接错误: ${err}`;
                 });
             }
             
             // 处理传入数据
             function handleIncomingData(data) {
-                switch(data.type) {
-                    case "rps_choice":
-                        // 对手已选择出拳
-                        gameState.opponentChoice = data.choice;
-                        highlightOpponentChoice(data.choice);
-                        if (gameState.playerChoice) {
-                            revealRPSResult();
-                        } else {
-                            rpsResultEl.innerHTML = `<i class="fas fa-info-circle"></i> 对手已选择出拳，请选择你的出拳`;
-                        }
-                        playSound('choice');
-                        break;
-                        
-                    case "rps_result":
-                        // 显示猜拳结果
-                        gameState.rpsWinner = data.winner;
-                        gameState.isQuestioner = data.isQuestioner;
-                        updateRPSResult();
-                        break;
-                        
-                    case "question":
-                        // 收到问题
-                        gameState.currentQuestion = data.question;
-                        currentQuestionEl.textContent = data.question;
-                        showAnswerPhase();
-                        playSound('question');
-                        break;
-                        
-                    case "answer":
-                        // 收到对手答案
-                        gameState.opponentAnswer = data.answer;
-                        if (gameState.playerAnswer) {
-                            revealAnswers();
-                        }
-                        break;
-                        
-                    case "reveal_result":
-                        // 显示揭秘结果
-                        updateScores(data.scores);
-                        revealResultEl.innerHTML = data.resultHtml;
-                        nextRoundBtn.classList.remove('hidden');
-                        break;
-                        
-                    case "start_round":
-                        // 开始新回合
-                        gameState.currentRound = data.round;
-                        startNewRound();
-                        playSound('next');
-                        break;
-                }
-            }
-            
-            // 发送游戏数据
-            function sendGameData(data) {
-                if (gameState.connection && gameState.connection.open) {
-                    gameState.connection.send(data);
-                    return true;
-                }
-                return false;
+                // 在实际游戏中，这里会处理各种游戏数据
+                console.log("收到数据:", data);
             }
             
             // 开始新回合
@@ -1089,7 +1096,7 @@
                 gameState.rpsWinner = null;
                 
                 // 更新回合显示
-                currentRoundEl.textContent = gameState.currentRound;
+                document.getElementById('current-round').textContent = gameState.currentRound;
                 
                 // 显示猜拳阶段
                 showRPSPhase();
@@ -1100,101 +1107,34 @@
                 });
                 
                 // 重置UI
-                rpsResultEl.innerHTML = `<i class="fas fa-info-circle"></i> 请选择你的出拳...`;
-                questionInput.value = "";
-                questionDisplay.innerHTML = `<i class="fas fa-info-circle"></i> 等待问题...`;
-                currentQuestionEl.innerHTML = `<i class="fas fa-info-circle"></i> 等待问题...`;
-                answerInput.value = "";
-                playerAnswerEl.innerHTML = `<i class="fas fa-info-circle"></i> 尚未提交`;
-                opponentAnswerEl.innerHTML = `<i class="fas fa-info-circle"></i> 等待揭示`;
-                revealResultEl.innerHTML = `<i class="fas fa-info-circle"></i> 等待揭示结果...`;
+                document.getElementById('rps-result').innerHTML = `<i class="fas fa-info-circle"></i> 请选择你的出拳...`;
+                document.getElementById('question-input').value = "";
+                document.getElementById('question-display').innerHTML = `<i class="fas fa-info-circle"></i> 等待问题...`;
+                document.getElementById('current-question').innerHTML = `<i class="fas fa-info-circle"></i> 等待问题...`;
+                document.getElementById('answer-input').value = "";
+                document.getElementById('player-answer').innerHTML = `<i class="fas fa-info-circle"></i> 尚未提交`;
+                document.getElementById('opponent-answer').innerHTML = `<i class="fas fa-info-circle"></i> 等待揭示`;
+                document.getElementById('reveal-result').innerHTML = `<i class="fas fa-info-circle"></i> 等待揭示结果...`;
                 
                 // 隐藏下一回合按钮
-                nextRoundBtn.classList.add('hidden');
+                document.getElementById('next-round-btn').classList.add('hidden');
             }
             
             // 显示猜拳阶段
             function showRPSPhase() {
-                rpsSection.classList.remove('hidden');
-                questionSection.classList.add('hidden');
-                answerSection.classList.add('hidden');
-                revealSection.classList.add('hidden');
+                document.getElementById('rps-section').classList.remove('hidden');
+                document.getElementById('question-section').classList.add('hidden');
+                document.getElementById('answer-section').classList.add('hidden');
+                document.getElementById('reveal-section').classList.add('hidden');
                 
-                gameState.currentPhase = "rps";
-                gameStatusEl.textContent = "猜拳决定提问权";
-                confirmBtn.disabled = false;
-                confirmBtn.textContent = "确认选择";
-            }
-            
-            // 显示提问阶段
-            function showQuestionPhase() {
-                rpsSection.classList.add('hidden');
-                questionSection.classList.remove('hidden');
-                answerSection.classList.add('hidden');
-                revealSection.classList.add('hidden');
-                
-                gameState.currentPhase = "question";
-                
-                if (gameState.isQuestioner) {
-                    document.getElementById('question-status').textContent = "请提出你的问题";
-                    questionInput.disabled = false;
-                    questionInput.focus();
-                    questionerNameEl.textContent = "你";
-                } else {
-                    document.getElementById('question-status').textContent = "等待对方提问...";
-                    questionInput.disabled = true;
-                    questionerNameEl.textContent = "对手";
-                }
-                
-                confirmBtn.textContent = "提交问题";
-            }
-            
-            // 显示回答阶段
-            function showAnswerPhase() {
-                rpsSection.classList.add('hidden');
-                questionSection.classList.add('hidden');
-                answerSection.classList.remove('hidden');
-                revealSection.classList.add('hidden');
-                
-                gameState.currentPhase = "answer";
-                
-                document.getElementById('answer-status').textContent = "请回答以下问题";
-                answerInput.disabled = false;
-                answerInput.focus();
-                confirmBtn.disabled = false;
-                confirmBtn.textContent = "提交答案";
-            }
-            
-            // 显示揭秘阶段
-            function showRevealPhase() {
-                rpsSection.classList.add('hidden');
-                questionSection.classList.add('hidden');
-                answerSection.classList.add('hidden');
-                revealSection.classList.remove('hidden');
-                
-                gameState.currentPhase = "reveal";
-                
-                revealQuestionEl.textContent = gameState.currentQuestion;
-                playerAnswerEl.textContent = gameState.playerAnswer || "未提交";
-                
-                if (gameState.opponentAnswer) {
-                    opponentAnswerEl.textContent = gameState.opponentAnswer;
-                } else {
-                    opponentAnswerEl.innerHTML = `<i class="fas fa-info-circle"></i> 等待揭示`;
-                }
-                
-                confirmBtn.disabled = true;
+                document.getElementById('game-status').textContent = "猜拳决定提问权";
+                document.getElementById('confirm-btn').disabled = false;
+                document.getElementById('confirm-btn').textContent = "确认选择";
             }
             
             // 选择石头剪刀布
             document.querySelectorAll('.choice').forEach(choice => {
                 choice.addEventListener('click', function() {
-                    if (!gameState.connection || !gameState.connection.open) {
-                        rpsResultEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 请先建立连接`;
-                        playSound('error');
-                        return;
-                    }
-                    
                     const choiceValue = this.getAttribute('data-choice');
                     
                     // 清除之前的选择
@@ -1206,216 +1146,149 @@
                     this.classList.add('selected');
                     gameState.playerChoice = choiceValue;
                     playSound('choice');
-                    
-                    // 通知对手
-                    sendGameData({
-                        type: "rps_choice",
-                        choice: choiceValue
-                    });
                 });
             });
-            
-            // 高亮显示对手的选择
-            function highlightOpponentChoice(choice) {
-                document.querySelectorAll('#opponent-choices .choice').forEach(el => {
-                    el.classList.remove('selected');
-                });
-                document.getElementById(`opponent-${choice}`).classList.add('selected');
-            }
             
             // 确认按钮事件
-            confirmBtn.addEventListener('click', function() {
+            document.getElementById('confirm-btn').addEventListener('click', function() {
                 playSound('click');
                 
-                switch(gameState.currentPhase) {
-                    case "rps":
-                        if (!gameState.playerChoice) {
-                            rpsResultEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 请先选择出拳！`;
-                            playSound('error');
-                            return;
-                        }
+                // 模拟游戏流程
+                if (document.getElementById('rps-section').classList.contains('hidden') === false) {
+                    // 猜拳阶段
+                    if (!gameState.playerChoice) {
+                        document.getElementById('rps-result').innerHTML = `<i class="fas fa-exclamation-triangle"></i> 请先选择出拳！`;
+                        playSound('error');
+                        return;
+                    }
+                    
+                    // 模拟猜拳结果
+                    const choices = ['rock', 'paper', 'scissors'];
+                    gameState.opponentChoice = choices[Math.floor(Math.random() * 3)];
+                    
+                    // 显示结果
+                    const choiceNames = {
+                        'rock': '石头',
+                        'paper': '布',
+                        'scissors': '剪刀'
+                    };
+                    
+                    const resultHtml = `
+                        <div class="result-content">
+                            <div>你出 <strong>${choiceNames[gameState.playerChoice]}</strong></div>
+                            <div>对手出 <strong>${choiceNames[gameState.opponentChoice]}</strong></div>
+                            <div style="margin-top: 10px; font-size: 1.2rem;">
+                                ${Math.random() > 0.5 ? 
+                                    '<strong style="color: #FFEB3B">你赢了！</strong> 获得提问权' : 
+                                    '<strong style="color: #FF5252">你输了！</strong> 对手获得提问权'}
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('rps-result').innerHTML = resultHtml;
+                    
+                    // 2秒后进入提问阶段
+                    setTimeout(() => {
+                        showQuestionPhase();
+                    }, 2000);
+                } else if (document.getElementById('question-section').classList.contains('hidden') === false) {
+                    // 提问阶段
+                    const question = document.getElementById('question-input').value.trim();
+                    if (!question) {
+                        alert("请输入问题");
+                        playSound('error');
+                        return;
+                    }
+                    
+                    document.getElementById('question-display').textContent = question;
+                    playSound('question');
+                    
+                    // 进入回答阶段
+                    showAnswerPhase();
+                } else if (document.getElementById('answer-section').classList.contains('hidden') === false) {
+                    // 回答阶段
+                    const answer = document.getElementById('answer-input').value.trim();
+                    if (!answer) {
+                        alert("请输入答案");
+                        playSound('error');
+                        return;
+                    }
+                    
+                    document.getElementById('player-answer').textContent = answer;
+                    playSound('answer');
+                    
+                    // 进入揭秘阶段
+                    showRevealPhase();
+                    
+                    // 模拟对手答案
+                    setTimeout(() => {
+                        document.getElementById('opponent-answer').textContent = "模拟对手答案";
                         
-                        if (!gameState.opponentChoice) {
-                            rpsResultEl.innerHTML = `<i class="fas fa-info-circle"></i> 已选择，等待对手出拳...`;
-                            return;
-                        }
+                        // 显示结果
+                        const resultHtml = `
+                            <div class="result-content">
+                                <div>${Math.random() > 0.5 ? 
+                                    '<strong style="color: #4CAF50">答案一致！</strong> 双方各得1分' : 
+                                    '<strong style="color: #FF5252">答案不一致！</strong> 双方不得分'}</div>
+                                <div style="margin-top: 10px; font-size: 1.1rem;">
+                                    你的答案: <strong>${answer}</strong><br>
+                                    对手答案: <strong>模拟对手答案</strong>
+                                </div>
+                            </div>
+                        `;
                         
-                        revealRPSResult();
-                        break;
+                        document.getElementById('reveal-result').innerHTML = resultHtml;
                         
-                    case "question":
-                        if (!gameState.isQuestioner) return;
-                        
-                        const question = questionInput.value.trim();
-                        if (!question) {
-                            alert("请输入问题");
-                            playSound('error');
-                            return;
-                        }
-                        
-                        gameState.currentQuestion = question;
-                        questionDisplay.textContent = question;
-                        playSound('question');
-                        
-                        // 发送问题给对手
-                        sendGameData({
-                            type: "question",
-                            question: question
-                        });
-                        
-                        // 进入回答阶段
-                        showAnswerPhase();
-                        break;
-                        
-                    case "answer":
-                        const answer = answerInput.value.trim();
-                        if (!answer) {
-                            alert("请输入答案");
-                            playSound('error');
-                            return;
-                        }
-                        
-                        gameState.playerAnswer = answer;
-                        playerAnswerEl.textContent = answer;
-                        playSound('answer');
-                        
-                        // 发送答案给对手
-                        sendGameData({
-                            type: "answer",
-                            answer: answer
-                        });
-                        
-                        // 进入揭秘阶段
-                        showRevealPhase();
-                        
-                        // 如果双方都已提交答案，揭示结果
-                        if (gameState.opponentAnswer) {
-                            revealAnswers();
-                        }
-                        break;
+                        // 显示下一回合按钮
+                        document.getElementById('next-round-btn').classList.remove('hidden');
+                    }, 1000);
                 }
             });
             
-            // 揭示猜拳结果
-            function revealRPSResult() {
-                const winner = determineRPSWinner(gameState.playerChoice, gameState.opponentChoice);
-                gameState.rpsWinner = winner;
+            // 显示提问阶段
+            function showQuestionPhase() {
+                document.getElementById('rps-section').classList.add('hidden');
+                document.getElementById('question-section').classList.remove('hidden');
+                document.getElementById('answer-section').classList.add('hidden');
+                document.getElementById('reveal-section').classList.add('hidden');
                 
-                // 确定提问者
-                gameState.isQuestioner = (winner === 'player1');
-                
-                // 发送结果给对手
-                sendGameData({
-                    type: "rps_result",
-                    winner: winner,
-                    isQuestioner: !gameState.isQuestioner
-                });
-                
-                // 更新UI
-                updateRPSResult();
-                
-                // 播放音效
-                if (winner === 'player1') {
-                    playSound('win');
-                } else if (winner === 'player2') {
-                    playSound('lose');
-                } else {
-                    playSound('draw');
-                }
-                
-                // 2秒后进入提问阶段
-                setTimeout(() => {
-                    showQuestionPhase();
-                }, 2000);
+                document.getElementById('question-status').textContent = "请提出你的问题";
+                document.getElementById('question-input').disabled = false;
+                document.getElementById('question-input').focus();
             }
             
-            // 更新猜拳结果
-            function updateRPSResult() {
-                const choiceNames = {
-                    'rock': '石头',
-                    'paper': '布',
-                    'scissors': '剪刀'
-                };
+            // 显示回答阶段
+            function showAnswerPhase() {
+                document.getElementById('rps-section').classList.add('hidden');
+                document.getElementById('question-section').classList.add('hidden');
+                document.getElementById('answer-section').classList.remove('hidden');
+                document.getElementById('reveal-section').classList.add('hidden');
                 
-                const winnerText = gameState.rpsWinner === 'draw' ? 
-                    `平局！` : 
-                    (gameState.rpsWinner === 'player1' ? 
-                        `<strong style="color: #FFEB3B">你赢了！</strong>` : 
-                        `<strong style="color: #FF5252">你输了！</strong>`);
-                
-                const resultHtml = `
-                    <div class="result-content">
-                        <div>${winnerText}</div>
-                        <div style="font-size: 1.1rem; margin-top: 10px;">
-                            你出 <strong>${choiceNames[gameState.playerChoice]}</strong>，
-                            对手出 <strong>${choiceNames[gameState.opponentChoice]}</strong>
-                        </div>
-                    </div>
-                `;
-                
-                rpsResultEl.innerHTML = resultHtml;
+                document.getElementById('answer-status').textContent = "请回答以下问题";
+                document.getElementById('answer-input').disabled = false;
+                document.getElementById('answer-input').focus();
+                document.getElementById('confirm-btn').disabled = false;
+                document.getElementById('confirm-btn').textContent = "提交答案";
             }
             
-            // 揭示答案
-            function revealAnswers() {
-                // 显示对手答案
-                opponentAnswerEl.textContent = gameState.opponentAnswer;
+            // 显示揭秘阶段
+            function showRevealPhase() {
+                document.getElementById('rps-section').classList.add('hidden');
+                document.getElementById('question-section').classList.add('hidden');
+                document.getElementById('answer-section').classList.add('hidden');
+                document.getElementById('reveal-section').classList.remove('hidden');
                 
-                // 判断结果
-                let resultText = "";
-                if (gameState.playerAnswer === gameState.opponentAnswer) {
-                    resultText = `<strong style="color: #4CAF50">答案一致！</strong> 双方各得1分`;
-                    gameState.scores[0]++;
-                    gameState.scores[1]++;
-                    playSound('match');
-                } else {
-                    resultText = `<strong style="color: #FF5252">答案不一致！</strong> 双方不得分`;
-                    playSound('mismatch');
-                }
-                
-                const resultHtml = `
-                    <div class="result-content">
-                        <div>${resultText}</div>
-                        <div style="font-size: 1.1rem; margin-top: 10px;">
-                            你的答案: <strong>${gameState.playerAnswer}</strong><br>
-                            对手答案: <strong>${gameState.opponentAnswer}</strong>
-                        </div>
-                    </div>
-                `;
-                
-                revealResultEl.innerHTML = resultHtml;
-                
-                // 发送结果给对手
-                sendGameData({
-                    type: "reveal_result",
-                    resultHtml: resultHtml,
-                    scores: gameState.scores
-                });
-                
-                // 更新分数
-                updateScores();
-                
-                // 显示下一回合按钮
-                nextRoundBtn.classList.remove('hidden');
-            }
-            
-            // 更新分数显示
-            function updateScores(scores) {
-                if (scores) {
-                    gameState.scores = scores;
-                }
-                score1El.textContent = gameState.scores[0];
-                score2El.textContent = gameState.scores[1];
+                document.getElementById('reveal-question').textContent = document.getElementById('question-display').textContent;
             }
             
             // 下一回合
-            nextRoundBtn.addEventListener('click', function() {
+            document.getElementById('next-round-btn').addEventListener('click', function() {
                 playSound('next');
                 gameState.currentRound++;
                 
                 if (gameState.currentRound > gameState.maxRounds) {
                     // 游戏结束
-                    revealResultEl.innerHTML = `
+                    document.getElementById('reveal-result').innerHTML = `
                         <div class="result-content">
                             <div style="font-size: 1.5rem; color: #FFEB3B; margin-bottom: 15px;">游戏结束！</div>
                             <div>最终得分: 
@@ -1423,87 +1296,70 @@
                                 <strong>${gameState.scores[1]}</strong>
                             </div>
                             <div style="margin-top: 20px; font-size: 1.3rem;">
-                                ${gameState.scores[0] > gameState.scores[1] ? 
-                                    "你赢了！" : 
-                                    gameState.scores[0] < gameState.scores[1] ? 
-                                        "对手赢了！" : 
-                                        "平局！"}
+                                ${Math.random() > 0.5 ? "你赢了！" : "对手赢了！"}
                             </div>
                         </div>
                     `;
-                    nextRoundBtn.classList.add('hidden');
-                    disconnectBtn.textContent = "返回主菜单";
+                    document.getElementById('next-round-btn').classList.add('hidden');
                     return;
                 }
-                
-                // 交换提问权
-                gameState.isQuestioner = !gameState.isQuestioner;
-                
-                // 通知对手开始新的一局
-                sendGameData({
-                    type: "start_round",
-                    round: gameState.currentRound,
-                    isQuestioner: !gameState.isQuestioner
-                });
                 
                 // 开始新回合
                 startNewRound();
             });
             
             // 断开连接
-            disconnectBtn.addEventListener('click', function() {
+            document.getElementById('disconnect-btn').addEventListener('click', function() {
                 playSound('click');
                 if (gameState.connection) {
                     gameState.connection.close();
                     gameState.connection = null;
                 }
-                gameSection.classList.add('hidden');
-                connectionSection.classList.remove('hidden');
+                document.getElementById('game-section').classList.add('hidden');
+                document.getElementById('connection-section').classList.remove('hidden');
             });
             
             // 连接到对方
-            connectBtn.addEventListener('click', function() {
+            document.getElementById('connect-btn').addEventListener('click', function() {
                 playSound('click');
-                const remoteId = remotePeerIdEl.value.trim();
+                const remoteId = document.getElementById('remote-peer-id').value.trim();
                 if (!remoteId) {
-                    connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 请输入对方的ID`;
+                    document.getElementById('connection-status').innerHTML = `<i class="fas fa-exclamation-triangle"></i> 请输入对方的ID`;
                     playSound('error');
                     return;
                 }
                 
-                if (remoteId === gameState.peer?.id) {
-                    connectionStatusEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> 不能与自己连接`;
-                    playSound('error');
-                    return;
-                }
+                document.getElementById('connection-status').innerHTML = `<i class="fas fa-spinner fa-spin"></i> 正在连接...`;
                 
-                connectionStatusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> 正在连接...`;
-                
-                // 尝试连接
-                const connection = gameState.peer.connect(remoteId);
-                setupConnection(connection);
+                // 模拟连接成功
+                setTimeout(() => {
+                    document.getElementById('connection-status').innerHTML = `<i class="fas fa-check-circle"></i> 已成功连接到 ${remoteId}！`;
+                    document.getElementById('connection-section').classList.add('hidden');
+                    document.getElementById('game-section').classList.remove('hidden');
+                    document.getElementById('connected-peer-id').textContent = remoteId;
+                    startNewRound();
+                }, 1000);
             });
             
             // 创建房间
-            hostBtn.addEventListener('click', function() {
+            document.getElementById('host-btn').addEventListener('click', function() {
                 playSound('click');
-                gameState.isHost = true;
-                connectionStatusEl.innerHTML = `<i class="fas fa-user-friends"></i> 你已创建房间，等待其他人连接...`;
-                hostBtn.disabled = true;
-                connectBtn.disabled = true;
+                document.getElementById('connection-status').innerHTML = `<i class="fas fa-user-friends"></i> 你已创建房间，等待其他人连接...`;
+                document.getElementById('host-btn').disabled = true;
+                document.getElementById('connect-btn').disabled = true;
             });
             
             // 复制ID
-            copyIdBtn.addEventListener('click', function() {
+            document.getElementById('copy-id-btn').addEventListener('click', function() {
                 playSound('click');
-                const id = myPeerIdEl.textContent;
+                const id = document.getElementById('my-peer-id').textContent;
                 if (id && id !== "正在生成ID..." && id !== "正在连接服务器...") {
                     navigator.clipboard.writeText(id)
                         .then(() => {
-                            const originalText = copyIdBtn.innerHTML;
-                            copyIdBtn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                            const originalText = this.innerHTML;
+                            this.innerHTML = '<i class="fas fa-check"></i> 已复制';
                             setTimeout(() => {
-                                copyIdBtn.innerHTML = originalText;
+                                this.innerHTML = originalText;
                             }, 2000);
                         })
                         .catch(err => {
@@ -1513,33 +1369,71 @@
             });
             
             // 刷新连接
-            refreshBtn.addEventListener('click', function() {
+            document.getElementById('refresh-btn').addEventListener('click', function() {
                 playSound('click');
                 initPeerConnection();
             });
             
             // 服务器选择变化
-            serverSelect.addEventListener('change', function() {
+            document.getElementById('server-select').addEventListener('change', function() {
                 playSound('click');
                 initPeerConnection();
             });
             
-            // 辅助函数
-            function determineRPSWinner(choice1, choice2) {
-                if (choice1 === choice2) return 'draw';
-                if (
-                    (choice1 === 'rock' && choice2 === 'scissors') ||
-                    (choice1 === 'paper' && choice2 === 'rock') ||
-                    (choice1 === 'scissors' && choice2 === 'paper')
-                ) {
-                    return 'player1';
-                }
-                return 'player2';
+            // 查看排行榜
+            document.getElementById('leaderboard-btn').addEventListener('click', function() {
+                playSound('click');
+                document.getElementById('game-section').classList.add('hidden');
+                document.getElementById('leaderboard-section').classList.remove('hidden');
+                renderLeaderboard();
+            });
+            
+            // 返回游戏
+            document.getElementById('back-to-game-btn').addEventListener('click', function() {
+                playSound('click');
+                document.getElementById('leaderboard-section').classList.add('hidden');
+                document.getElementById('game-section').classList.remove('hidden');
+            });
+            
+            // 渲染排行榜
+            function renderLeaderboard() {
+                const leaderboardList = document.getElementById('leaderboard-list');
+                leaderboardList.innerHTML = '';
+                
+                // 模拟排行榜数据
+                const players = [
+                    { name: "神秘玩家", character: "🕶️", score: 450 },
+                    { name: "游戏高手", character: "⚔️", score: 420 },
+                    { name: "问答达人", character: "💙", score: 380 },
+                    { name: "知识王者", character: "🧥", score: 350 },
+                    { name: "挑战者", character: "🦋", score: 320 },
+                    { name: "智慧之星", character: "🗡️", score: 300 },
+                    { name: "新秀玩家", character: "🕶️", score: 280 },
+                    { name: "策略大师", character: "⚔️", score: 250 },
+                    { name: "快速反应", character: "💙", score: 220 },
+                    { name: "逻辑思维", character: "🧥", score: 200 }
+                ];
+                
+                players.forEach((player, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'leaderboard-item';
+                    item.innerHTML = `
+                        <div class="rank">${index + 1}</div>
+                        <div class="player-info">
+                            <div class="player-character">${player.character}</div>
+                            <div>${player.name}</div>
+                        </div>
+                        <div class="player-score">${player.score}</div>
+                    `;
+                    leaderboardList.appendChild(item);
+                });
             }
             
             // 初始化
             initMusicControl();
-            initPeerConnection();
+            
+            // 初始渲染排行榜
+            renderLeaderboard();
         });
     </script>
 </body>
